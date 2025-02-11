@@ -19,11 +19,10 @@
     "config": "config/"
   },
   "engines": {
-    "node": "^10.0.0",
     "yarn": ">= 0.18.0"
   },
   "scripts": {
-    "start-client": "PORT=4000 BROWSER=none react-scripts start",
+    "start-client": "PORT=9000 BROWSER=none react-scripts start",
     "start-server": "NODE_ENV=development PORT=3030 nodemon -w ./backend/",
     "start:dev": "concurrently -k \"yarn run start-server\" \"yarn run start-client\"",
     "test-backend": "yarn run eslint && NODE_ENV= yarn run mocha",
@@ -57,7 +56,7 @@
     "auth0": "^2.18.0",
     "aws-sdk": "^2.503.0",
     "axios": "^0.19.0",
-    "compression": "^1.7.3",
+    "compression": "^1.8.0",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "email-templates": "^5.1.0",
@@ -69,7 +68,7 @@
     "googleapis": "^42.0.0",
     "helmet": "^3.20.0",
     "jwt-decode": "^2.2.0",
-    "later": "github:RickCarlino/later",
+    "later": "git+https://github.com/RickCarlino/later.git",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "mongodb-core": "^3.2.7",
@@ -100,7 +99,7 @@
     "create-react-app": "^2.1.3",
     "http-proxy-middleware": "^0.19.1",
     "mocha": "^5.2.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.14.1",
     "nodemon": "^1.19.1",
     "react-scripts": "3.0.0",
     "request": "^2.88.0",
