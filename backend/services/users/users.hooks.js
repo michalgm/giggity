@@ -2,6 +2,7 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 const { hashPassword, protect } = require('@feathersjs/authentication-local').hooks;
 const errors = require('@feathersjs/errors');
 const { restrictToRole, generateCode, restrictFields } = require('../../hooks/customHooks');
+const bcrypt = require("bcryptjs");
 
 const switchProject = context => {
   if (context.params.provider && context.data && context.data.project && context.params.user) {
@@ -91,14 +92,16 @@ const sendInviteEmail = async (context) => {
   });
 }
 
+const passwordHasher = (password) => bcrypt.hash(password, 12);
+
 module.exports = {
   before: {
     all: [authenticate('jwt')],
     find: [],
     get: [],
-    create: [restrictToRole('Admin'), createUser, customizeAuthResponse, hashPassword()],
+    create: [restrictToRole('Admin'), createUser, customizeAuthResponse, hashPassword({hash: passwordHasher})],
     update: [],
-    patch: [restrictToRole('Admin'), customizeAuthResponse, hashPassword(), restrictFields({ self: ['accessCode'] }), switchProject],
+    patch: [restrictToRole('Admin'), customizeAuthResponse, hashPassword({hash:passwordHasher}), restrictFields({ self: ['accessCode'] }), switchProject],
     remove: []
   },
 
