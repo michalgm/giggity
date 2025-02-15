@@ -26,4 +26,4 @@ config/development.json
 config/production.json
 config/staging.json
 
-mongo-docker/
+mongo-docker/data/

@@ -1,0 +1,14 @@
+version: "3"
+services:
+  mongo:
+    image: mongo:3.2
+    ports:
+      - 27017:27017
+    environment:
+      -foo: bar
+      #  - MONGO_INITDB_ROOT_USERNAME=user
+      #- MONGO_INITDB_ROOT_PASSWORD=pass
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data/db
