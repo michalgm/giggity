@@ -6,6 +6,9 @@ if (! isIncluded()) {
 set_error_handler('handleError');
 require_once('config.php');
 
+require_once 'vendor/autoload.php';
+
+
 
 
 
@@ -250,7 +253,7 @@ function gigs_setAvailability($request) {
 
 function gigs_fetchMembers() {
 	global $addressbook_table;
-	$members = dbLookupArray("select id, concat(firstname, ' ', lastname) as name, email, if(mobile= '', home, mobile) as phone, group_concat(group_name) as groups from $addressbook_table.addressbook join $addressbook_table.address_in_groups b using(id) left join $addressbook_table.address_in_groups c using(id) left join $addressbook_table.group_list d on c.group_id = d.group_id and c.group_id in (6,7,8,9, null) where b.group_id in(3,10) group by id");
+	$members = dbLookupArray("select id, concat(firstname, ' ', lastname) as name, email, if(mobile= '', home, mobile) as phone, group_concat(group_name) as 'groups' from $addressbook_table.addressbook join $addressbook_table.address_in_groups b using(id) left join $addressbook_table.address_in_groups c using(id) left join $addressbook_table.group_list d on c.group_id = d.group_id and c.group_id in (6,7,8,9, null) where b.group_id in(3,10) group by id");
 	return $members;
 }
 
@@ -286,7 +289,7 @@ function setResponse($statusCode, $statusString, $data="") {
   //}
 }
 
-function handleError($errno, $errstr, $errfile, $errline, $errcontext) {
+function handleError($errno, $errstr, $errfile, $errline, $errcontext=null) {
   global $debug;
   $debug = 1;
   $data = array();
@@ -307,7 +310,7 @@ function saveToCalendar($gig, $calendartype='private') {
 	if ($calendartype == 'public' && ! $gig['public_description']) { return; }
 
 	$cal = getGoogleClient();
-	$event = new Google_Event();
+	$event = new Google_Service_Calendar_Event();
 	$gig_details = "";
 	$title = $gig['title'];
 	if ($calendartype == 'private') {
@@ -357,32 +360,33 @@ function deleteFromCalendar($gig, $calendartype='private') {
 	extract($calendars[$calendartype]);
 	if(! $gig[$id_field]) { return; }
 	$cal = getGoogleClient();
-	$event = new Google_Event();
+	$event = new Google_Service_Calendar_Event();
 	$cal->events->delete($calendar_id, $gig[$id_field]);
 	dbwrite("update gigs set $id_field = '' where gig_id = $gig[gig_id]");
 }
 
 function getGoogleClient() {
-	require_once('google-api-php-client/src/Google_Client.php');
-	require_once('google-api-php-client/src/contrib/Google_CalendarService.php');
+	#require_once('google-api-php-client/src/Google_Client.php');
+	#require_once('google-api-php-client/src/contrib/Google_CalendarService.php');
 
 	global $google_api;
 	extract($google_api);
 	$client = new Google_Client();
-	$client->setUseObjects(true);
+	#$client->setUseObjects(true);
 	$client->setAccessType('offline');
+	$client->addScope(Google_Service_Calendar::CALENDAR);
 	$client->setApplicationName($ApplicationName);
 	$client->setClientId($ClientId);
 	$client->setClientSecret($ClientSecret);
 	$client->setRedirectUri($RedirectUri);
 	$client->refreshToken($accessToken);
-	$cal = new Google_CalendarService($client);
+	$cal = new Google_Service_Calendar($client);
 	return $cal;
 }
 
 function newDateTime($date, $time) {
 	date_default_timezone_set('America/Los_Angeles');
-	$datetime = new Google_EventDateTime();
+	$datetime = new Google_Service_Calendar_EventDateTime();
 	$date = date('c', strtotime("$date $time"));
 	$datetime->setDateTime($date);
 	$datetime->setTimeZone('America/Los_Angeles');
