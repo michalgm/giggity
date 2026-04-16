@@ -27,3 +27,4 @@ config/production.json
 config/staging.json
 
 mongo-docker/data/
+bower_components

@@ -7,7 +7,13 @@
     "default": 10,
     "max": 50
   },
-  "roles": ["Root", "Admin", "Manager", "Member", "Read-Only"],
+  "roles": [
+    "Root",
+    "Admin",
+    "Manager",
+    "Member",
+    "Read-Only"
+  ],
   "rootEmails": [],
   "authentication": {
     "secret": "38b53c6493bfcc8127d58cbd26957bd602ea5e399ae7f97219d7baf1bd67f5bb9698a6556e6c72253ce44982dd6acbe772aa786ed878a48410341777faaf85e6fb186e87b343d8f7aae35afc7675156f3fe130144c9a268154b6717eb85696b044a34bd904102a90478b45dfed2c25772e3be22a13310237a239bd477d819a2b3ca720cd31b1bcf9dc4849545683e1467ceb2deadca822b92d18c50b718e51b704aae357714249fea87ad2f6d92057290985b50bad99f0b76c3d973fda6d934c552c015c3feb34153c2b0b264f58eaa18f124e5fd82c98150e3a96ef85290d0822db6aeedb8fe8c8c679bf4257f66acf475f80c27312837306f8618e7b9a4c03",
@@ -15,7 +21,7 @@
       "cookie",
       "jwt",
       "local",
-	     "auth0"
+      "auth0"
     ],
     "path": "/authentication",
     "service": "api/users",
@@ -35,7 +41,7 @@
       "passwordField": "password"
     },
     "auth0": {
-      "successRedirect": "http://localhost:4000",
+      "successRedirect": "http://localhost:5000",
       "domain": "giggity2.auth0.com",
       "scope": [
         "profile email openid"

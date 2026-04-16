@@ -22,7 +22,7 @@
     "yarn": ">= 0.18.0"
   },
   "scripts": {
-    "start-client": "PORT=9000 BROWSER=none react-scripts start",
+    "start-client": "PORT=5000 BROWSER=none react-scripts start",
     "start-server": "NODE_ENV=development PORT=3030 nodemon -w ./backend/",
     "start:dev": "concurrently -k \"yarn run start-server\" \"yarn run start-client\"",
     "test-backend": "yarn run eslint && NODE_ENV= yarn run mocha",
